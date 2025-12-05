@@ -1,0 +1,118 @@
+
+.astro-section {
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 16px;
+  color: #000; 
+}
+
+
+/* Заголовок + форма в одной строке */
+.astro-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* Заголовок блока */
+.astro-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+}
+
+/* Форма поиска */
+.astro-form {
+  display: flex;
+  gap: 8px;
+  color: #000;
+}
+
+/* Поля ввода */
+.astro-input {
+  padding: 6px 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  min-width: 90px;
+  background: #fff;
+  color: #000; /* текст внутри инпутов - чёрный */
+}
+
+.astro-input:focus {
+  outline: none;
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+}
+
+/* Маленькое поле (дни) */
+.astro-input-days {
+  width: 60px;
+}
+
+/* Кнопка Показать */
+.astro-button {
+  padding: 6px 14px;
+  background: #0d6efd;
+  color: #fff;
+  border: 1px solid #0d6efd;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.astro-button:hover {
+  background: #0b5ed7;
+}
+
+/* Таблица */
+.astro-table-wrapper {
+  margin-top: 10px;
+  border-top: 1px solid #dee2e6;
+  padding-top: 10px;
+  color: #000;
+}
+
+.astro-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  color: #000;
+}
+
+.astro-table th,
+.astro-table td {
+  padding: 8px;
+  border-bottom: 1px solid #dee2e6;
+  text-align: left;
+  color: #000;
+}
+
+.astro-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #000;
+}
+
+.astro-empty {
+  color: #777; 
+  font-style: italic;
+  text-align: center;
+}
+
+/* Блок JSON */
+.astro-json-toggle {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #000;
+}
+
+.astro-json-toggle summary {
+  cursor: pointer;
+  color: #0d6efd;
+  font-weight: 500;
+}

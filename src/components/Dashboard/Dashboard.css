@@ -1,0 +1,37 @@
+.tabs-container {
+  margin-top: 20px;
+}
+
+/* Шапка вкладок */
+.tabs-header {
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+/* Одна вкладка */
+.tab-item {
+  font-size: 15px;
+  font-weight: 500;
+  color: #555;
+  padding-bottom: 6px;
+  cursor: pointer;
+}
+
+.tab-item:hover {
+  color: #000;
+}
+
+/* Активная вкладка */
+.tab-item.active {
+  color: #000;
+  font-weight: 600;
+  border-bottom: 2px solid #0d6efd; /* синяя линия как в Bootstrap */
+}
+
+/* Контент вкладки */
+.tabs-body {
+  padding: 8px 0;
+}

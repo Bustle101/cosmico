@@ -1,0 +1,23 @@
+/* Контейнер блока */
+.jwst-featured {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px 0;
+}
+
+/* Заголовок */
+.jwst-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+  color: #000;
+}
+
+/* Подзаголовок */
+.jwst-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 12px 0;
+}

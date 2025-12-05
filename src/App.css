@@ -1,0 +1,12 @@
+#root {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Общий контейнер страниц */
+.app-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 16px;
+}

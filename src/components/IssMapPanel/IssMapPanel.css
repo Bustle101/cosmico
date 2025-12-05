@@ -1,0 +1,66 @@
+@import "leaflet/dist/leaflet.css";
+/* Контейнер блока */
+.iss-map-panel {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px 0;
+}
+
+/* Заголовок */
+.iss-map-title {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+
+/* Карта */
+.iss-map-wrapper {
+  width: 100%;
+  height: 280px;
+  margin-bottom: 20px;
+}
+
+.iss-map {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+
+/* Контейнер маленьких графиков */
+.iss-mini-charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Один мини-график */
+.iss-mini-chart {
+  font-size: 13px;
+  color: #000;
+}
+
+/* Подпись графика */
+.iss-mini-chart-label {
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+/* Синяя полоска (имитация графика) */
+.iss-mini-chart-bar {
+  width: 100%;
+  height: 20px;
+  background: #0d6efd;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
+/* Подписи снизу */
+.iss-mini-chart-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #666;
+}
