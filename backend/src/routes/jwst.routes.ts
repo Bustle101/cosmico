@@ -1,8 +1,14 @@
 import { Router } from "express";
-import { getOsdrHandler } from "../handlers/osdr.handler";
+import {
+  getJwstImagesHandler,
+  getJwstFeaturedHandler
+} from "../handlers/jwst.handler";
 
 const router = Router();
 
-router.get("/datasets", getOsdrHandler);
+// Галерея JWST (список)
+router.get("/images", getJwstImagesHandler);
+
+router.get("/featured", getJwstFeaturedHandler);
 
 export default router;

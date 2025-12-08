@@ -45,7 +45,7 @@ export const Dashboard = () => {
           <div>
             <IssStatsCards />
             <JwstFeaturedObservation/>
-            <IssMapPanel />
+            
             <JwstGallerySection /> 
 
           </div>
@@ -53,7 +53,7 @@ export const Dashboard = () => {
 
         {/* Вкладка ISS */}
         {tab === "iss" && (
-          <div>Здесь будут данные ISS</div>
+          <IssMapPanel />
         )}
 
         {/* Вкладка OSDR */}
