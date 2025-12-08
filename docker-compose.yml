@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: cosmico-backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    container_name: cosmico-db
+    environment:
+      POSTGRES_DB: cosmico
+      POSTGRES_USER: cosmico
+      POSTGRES_PASSWORD: cosmico
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cosmico"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+        - "5433:5432"
+
+
+volumes:
+  db_data:
