@@ -1,79 +1,89 @@
+import { FeedItem, FeedResponse } from "../domain/feed.types";
+
 import { getIssService } from "./iss.service";
 import { getJwstImagesService } from "./jwst.service";
 import { getOsdrService } from "./osdr.service";
 
-export async function getFeedService(limit: number = 20) {
-  const feed: any[] = [];
+export async function getFeedService(limit: number = 20): Promise<FeedResponse> {
+  const feed: FeedItem[] = [];
 
-  // ==== ISS ====
+  // ------------------------------
+  // 1) ISS — всегда 1 объект
+  // ------------------------------
   try {
     const iss = await getIssService();
-
     if (!iss.error) {
       feed.push({
         type: "iss",
         id: "iss-latest",
         title: "ISS — Latest Telemetry",
-        description: "Most recent ISS position and tracking data",
+        description: `Current position of the International Space Station`,
         image: null,
         url: null,
         timestamp: iss.fetched_at ? new Date(iss.fetched_at).getTime() : Date.now(),
         data: iss
       });
     }
-  } catch (e) {
-    console.log("[FEED] ISS error:", e);
+  } catch (err) {
+    console.log("[FEED] ISS error:", err);
   }
 
-  // ==== JWST ====
+  // Распределяем лимиты
+  const jwstLimit = Math.floor(limit / 2);
+  const osdrLimit = limit - jwstLimit; // чтобы в сумме = limit
+
+  // ------------------------------
+  // 2) JWST
+  // ------------------------------
   try {
-    const jwst = await getJwstImagesService(limit);
+    const jwst = await getJwstImagesService(jwstLimit);
     const images = jwst.items || jwst || [];
 
-    if (images.length) {
-      images.forEach((img: any) =>
-        feed.push({
-          type: "jwst",
-          id: img.id,
-          title: img.title,
-          description: img.description || "",
-          image: img.thumbnail_url || img.url,
-          url: img.url,
-          timestamp: img.captured_at
-            ? new Date(img.captured_at).getTime()
-            : Date.now() - 1000,
-          data: img
-        })
-      );
-    }
-  } catch (e) {
-    console.log("[FEED] JWST error:", e);
+    images.slice(0, jwstLimit).forEach((img: any) => {
+      feed.push({
+        type: "jwst",
+        id: img.id,
+        title: img.title || "JWST Image",
+        description: img.description || "",
+        image: img.thumbnail_url || img.url || null,
+        url: img.url || null,
+        timestamp: img.captured_at
+          ? new Date(img.captured_at).getTime()
+          : Date.now() - 1000,
+        data: img
+      });
+    });
+  } catch (err) {
+    console.log("[FEED] JWST error:", err);
   }
 
-  // ==== OSDR ====
+  // ------------------------------
+  // 3) OSDR
+  // ------------------------------
   try {
-    const osdr = await getOsdrService(limit);
+    const osdr = await getOsdrService(osdrLimit);
+    const datasets = osdr.items || [];
 
-    if (osdr.items?.length) {
-      osdr.items.forEach((ds: any) =>
-        feed.push({
-          type: "osdr",
-          id: ds.id,
-          title: ds.title,
-          description: ds.description,
-          image: ds.image || null,
-          url: ds.url,
-          timestamp: Date.now() - 2000, // OSDR не имеет точного timestamp → ставим стабильный
-          data: ds
-        })
-      );
-    }
-  } catch (e) {
-    console.log("[FEED] OSDR error:", e);
+    datasets.slice(0, osdrLimit).forEach((ds: any) => {
+      feed.push({
+        type: "osdr",
+        id: ds.id,
+        title: ds.title,
+        description: ds.description,
+        image: ds.image || null,
+        url: ds.url,
+        timestamp: Date.now() - 2000, // OSDR без точных дат
+        data: ds
+      });
+    });
+  } catch (err) {
+    console.log("[FEED] OSDR error:", err);
   }
 
-  // ==== SORT FEED ====
+  // ------------------------------
+  // 4) сортировка (новее → выше)
+  // ------------------------------
   feed.sort((a, b) => b.timestamp - a.timestamp);
 
-  return { ok: true, items: feed.slice(0, limit) };
+  return { ok: true, items: feed };
 }
