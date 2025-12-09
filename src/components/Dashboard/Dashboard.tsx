@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { IssStatsCards } from "../IssStatsCard/IssStatsCards";
-import { JwstFeaturedObservation } from "../JwstObservation/JwstFeaturedObservation";
 import { IssMapPanel } from "../IssMapPanel/IssMapPanel";
 import { JwstGallerySection } from "../JwstGallery/JwstGallerySection";
 
 import "./Dashboard.css"
+import OsdrPage from "../OSDR/Osdr";
 
 
 export const Dashboard = () => {
@@ -44,7 +44,7 @@ export const Dashboard = () => {
         {tab === "dashboard" && (
           <div>
             <IssStatsCards />
-            <JwstFeaturedObservation/>
+
             
             <JwstGallerySection /> 
 
@@ -58,7 +58,7 @@ export const Dashboard = () => {
 
         {/* Вкладка OSDR */}
         {tab === "osdr" && (
-          <div>Здесь данные NASA / OSDR</div>
+          <OsdrPage/>
         )}
       </div>
     </div>

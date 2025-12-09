@@ -1,4 +1,4 @@
-import { db } from "../config/db";
+import  db  from "../config/db";
 
 
 export async function saveJwstCache(key: string, value: any, ttlSeconds: number) {

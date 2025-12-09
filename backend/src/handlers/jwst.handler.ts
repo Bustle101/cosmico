@@ -4,9 +4,7 @@ import {
   getFeaturedJwstObservation
 } from "../services/jwst.service";
 
-/* ----------------------------------------------------------
-   📌 Галерея JWST
----------------------------------------------------------- */
+
 export async function getJwstImagesHandler(req: Request, res: Response) {
   const limit = Number(req.query.limit) || 20;
 
@@ -19,9 +17,7 @@ export async function getJwstImagesHandler(req: Request, res: Response) {
   return res.json({ items: result.items });
 }
 
-/* ----------------------------------------------------------
-   🌟 Featured JWST Observation (меняется каждые 10 минут)
----------------------------------------------------------- */
+
 export async function getJwstFeaturedHandler(req: Request, res: Response) {
   const result = await getFeaturedJwstObservation();
 

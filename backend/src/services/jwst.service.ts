@@ -23,9 +23,7 @@ function normalizeJwst(item: any) {
   };
 }
 
-/* -------------------------------------------------------------------
-    🎨 Основной сервис — галерея изображений (с кешированием)
--------------------------------------------------------------------- */
+
 export async function getJwstImagesService(limit: number = 20) {
   const cacheKey = `jwst:${limit}`;
 
@@ -49,15 +47,13 @@ export async function getJwstImagesService(limit: number = 20) {
   return { ok: true, items: normalized };
 }
 
-/* -------------------------------------------------------------------
-    🌟 NEW: Featured Observation — по очереди каждые 10 минут
--------------------------------------------------------------------- */
+
 export async function getFeaturedJwstObservation() {
   const now = Date.now();
 
-  // Если список пуст — загружаем его один раз
+
   if (featuredList.length === 0) {
-    const result = await getJwstImagesService(30); // 30 изображений для ротации
+    const result = await getJwstImagesService(30); 
 
     if (!result.ok || !result.items.length) {
       return {
@@ -71,7 +67,7 @@ export async function getFeaturedJwstObservation() {
     lastFeaturedUpdate = now;
   }
 
-  // Проверяем, прошло ли 10 минут
+  
   if (now - lastFeaturedUpdate > FEATURED_ROTATION_TIME) {
     featuredIndex = (featuredIndex + 1) % featuredList.length;
     lastFeaturedUpdate = now;

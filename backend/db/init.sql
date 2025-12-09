@@ -18,3 +18,16 @@ CREATE TABLE IF NOT EXISTS api_cache (
     value JSONB NOT NULL,
     expires_at TIMESTAMPTZ NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS fetch_log (
+    id SERIAL PRIMARY KEY,
+    service TEXT NOT NULL,              
+    endpoint TEXT NOT NULL,              
+    status TEXT NOT NULL,              
+    http_code INT,
+    duration_ms INT NOT NULL,           
+    payload_bytes INT,                   
+    error_code TEXT,                    
+    error_message TEXT,                  
+    fetched_at TIMESTAMPTZ DEFAULT now() 
+);

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { logApiCall } from "../utils/logger";
 
 const http = axios.create({
   baseURL: "https://api.jwstapi.com",
@@ -20,16 +21,24 @@ function wrapError(err: any) {
 
 // Получить JPG-файлы
 export async function fetchJwstImages(limit: number = 20) {
+  const url = "/all/type/jpg";
+
   try {
     const perPage = limit;
     const page = 1;
 
-    const res = await http.get("/all/type/jpg", {
+    const res = await http.get(url, {
       params: { page, perPage }
     });
 
+ 
+    await logApiCall("jwst", url, true);
+
     return res.data.body; // важное поле
-  } catch (err) {
+  } catch (err: any) {
+ 
+    await logApiCall("jwst", url, false, err.message);
+
     return wrapError(err);
   }
 }

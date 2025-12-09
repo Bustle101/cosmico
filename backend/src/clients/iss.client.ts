@@ -1,4 +1,5 @@
 import axios from "axios";
+import { logApiCall } from "../utils/logger";
 
 const http = axios.create({
   baseURL: "http://api.open-notify.org",
@@ -9,10 +10,19 @@ const http = axios.create({
 });
 
 export async function fetchIssPositionRaw() {
+  const url = "/iss-now.json";
+
   try {
-    const response = await http.get("/iss-now.json");
+    const response = await http.get(url);
+
+    // лог успешного вызова
+    await logApiCall("iss", url, true);
+
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
+    // лог ошибки
+    await logApiCall("iss", url, false, error.message);
+
     return {
       error: {
         code: "UPSTREAM_ISS_ERROR",

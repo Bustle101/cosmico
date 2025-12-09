@@ -7,9 +7,7 @@ import { getOsdrService } from "./osdr.service";
 export async function getFeedService(limit: number = 20): Promise<FeedResponse> {
   const feed: FeedItem[] = [];
 
-  // ------------------------------
-  // 1) ISS — всегда 1 объект
-  // ------------------------------
+
   try {
     const iss = await getIssService();
     if (!iss.error) {
@@ -28,13 +26,11 @@ export async function getFeedService(limit: number = 20): Promise<FeedResponse> 
     console.log("[FEED] ISS error:", err);
   }
 
-  // Распределяем лимиты
+ 
   const jwstLimit = Math.floor(limit / 2);
-  const osdrLimit = limit - jwstLimit; // чтобы в сумме = limit
+  const osdrLimit = limit - jwstLimit; 
 
-  // ------------------------------
-  // 2) JWST
-  // ------------------------------
+
   try {
     const jwst = await getJwstImagesService(jwstLimit);
     const images = jwst.items || jwst || [];
@@ -57,9 +53,6 @@ export async function getFeedService(limit: number = 20): Promise<FeedResponse> 
     console.log("[FEED] JWST error:", err);
   }
 
-  // ------------------------------
-  // 3) OSDR
-  // ------------------------------
   try {
     const osdr = await getOsdrService(osdrLimit);
     const datasets = osdr.items || [];
@@ -72,7 +65,7 @@ export async function getFeedService(limit: number = 20): Promise<FeedResponse> 
         description: ds.description,
         image: ds.image || null,
         url: ds.url,
-        timestamp: Date.now() - 2000, // OSDR без точных дат
+        timestamp: Date.now() - 2000,
         data: ds
       });
     });
@@ -80,9 +73,7 @@ export async function getFeedService(limit: number = 20): Promise<FeedResponse> 
     console.log("[FEED] OSDR error:", err);
   }
 
-  // ------------------------------
-  // 4) сортировка (новее → выше)
-  // ------------------------------
+
   feed.sort((a, b) => b.timestamp - a.timestamp);
 
   return { ok: true, items: feed };

@@ -10,9 +10,9 @@ export interface FeedItem {
   image: string | null;
   url: string | null;
 
-  timestamp: number; // unix ms для сортировки
+  timestamp: number; 
 
-  data: any; // оригинальные данные (для detail-страниц)
+  data: any; 
 }
 
 export interface FeedResponse {

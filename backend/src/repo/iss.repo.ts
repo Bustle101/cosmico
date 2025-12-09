@@ -1,4 +1,4 @@
-import { db } from "../config/db";
+import  db  from "../config/db";
 import { IssPosition } from "../domain/iss.types";
 
 export async function upsertIssTelemetry(pos: IssPosition) {

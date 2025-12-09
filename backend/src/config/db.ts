@@ -1,19 +1,30 @@
 import { Pool } from "pg";
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+let db: any = null;
 
-async function connectWithRetry() {
+
+if (process.env.NODE_ENV === "test") {
+  console.log("[DB] Using mock DB (test mode)");
+  db = {
+    query: async () => ({ rows: [] }),
+  };
+} 
+else {
   try {
-    await pool.connect();
-    console.log("[DB] Connected to PostgreSQL");
+    db = new Pool({
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+    });
+
+    console.log("[DB] Pool created");
+
   } catch (err) {
-    console.log("[DB] Waiting for PostgreSQL... retrying in 3s");
-    setTimeout(connectWithRetry, 3000);
+    console.error("[DB] Failed to initialize DB:", err);
+ 
   }
 }
 
-connectWithRetry();
-
-export const db = pool;
+export default db;

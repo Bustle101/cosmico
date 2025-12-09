@@ -5,9 +5,7 @@ import {
   getLatestIssTelemetry
 } from "../repo/iss.repo";
 
-/**
- * Получить текущие координаты ISS и сохранить в БД
- */
+
 export async function getCurrentIssPosition() {
   const data = await fetchIssPositionRaw();
 
@@ -24,16 +22,12 @@ export async function getCurrentIssPosition() {
   return pos;
 }
 
-/**
- * История телеметрии ISS за период
- */
+
 export async function getIssHistoryService(from: string, to: string) {
   return await getIssHistory(new Date(from), new Date(to));
 }
 
-/**
- * Последняя запись телеметрии
- */
+
 export async function getIssLatest() {
   return await getLatestIssTelemetry();
 }
@@ -42,7 +36,7 @@ export async function getIssLatest() {
 export async function getIssService() {
   const latest = await getIssLatest();
 
-  // Если в базе нет данных — получаем и сохраняем
+ 
   if (!latest) {
     return await getCurrentIssPosition();
   }

@@ -1,4 +1,4 @@
-import { db } from "../config/db";
+import  db  from "../config/db";
 
 // сохранить кэш
 export async function saveOsdrCache(key: string, value: any, ttlSeconds: number) {
