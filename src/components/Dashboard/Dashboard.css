@@ -28,10 +28,16 @@
 .tab-item.active {
   color: #000;
   font-weight: 600;
-  border-bottom: 2px solid #0d6efd; /* синяя линия как в Bootstrap */
+  border-bottom: 2px solid #0d6efd; 
 }
 
 /* Контент вкладки */
 .tabs-body {
   padding: 8px 0;
+}
+
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* доп. расстояние между карточками */
 }

@@ -29,7 +29,19 @@ services:
       - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
         - "5433:5432"
-  
+  csv_service:
+    build: ./csv-service
+    container_name: csv_service
+    environment:
+      CSV_OUT_DIR: /csv_out
+      GEN_PERIOD_SEC: 300
+      BACKEND_URL: http://backend:3000
+    volumes:
+      - ./csv_out:/csv_out
+    depends_on:
+      - backend
+    restart: always
+
 
 
 volumes:

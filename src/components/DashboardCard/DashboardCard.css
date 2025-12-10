@@ -1,0 +1,98 @@
+.dashboard-card {
+  width: 100%;
+  padding: 20px 24px;
+  border-radius: 14px;
+  background: #1b1b1d;
+  border: 1px solid #2b2b2d;
+  color: white;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 18px; /* расстояние между карточками */
+}
+
+.dashboard-card-content {
+  max-width: 70%;
+}
+
+.dashboard-card h3 {
+  margin: 0 0 6px 0;
+  font-size: 20px;
+}
+
+.dashboard-card p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.dashboard-card-btn {
+  padding: 10px 14px;
+  background: #4e7cff;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.dashboard-card-btn:hover {
+  background: #345fe0;
+}
+.dashboard-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Псевдоэлемент — сам блик */
+.dashboard-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Яркий блик */
+.dashboard-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -180%;
+  width: 60%;       /* шире → эффект визуальнее */
+  height: 100%;
+
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 20%,
+    rgba(255, 255, 255, 0.28) 45%, /* яркий центр */
+    rgba(255, 255, 255, 0.12) 60%,
+    transparent 100%
+  );
+
+  transform: skewX(-25deg);
+  opacity: 0;
+
+  animation: shimmerBright 10s ease-in-out infinite;
+  animation-delay: 10s; /* раз в 2 минуты */
+}
+
+/* Яркая анимация */
+@keyframes shimmerBright {
+  0% {
+    left: -180%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  55% {
+    left: 160%;
+    opacity: 0.8; /* была 0.7 → ярче */
+  }
+  100% {
+    left: 160%;
+    opacity: 0;
+  }
+}

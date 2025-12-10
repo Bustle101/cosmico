@@ -17,49 +17,66 @@ interface OsdrItem {
 
 export const OsdrPage: React.FC = () => {
   const [items, setItems] = useState<OsdrItem[]>([]);
+  const [filteredItems, setFilteredItems] = useState<OsdrItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const DEFAULT_LIMIT = 12;
+  const [search, setSearch] = useState("");
+  const [limit, setLimit] = useState(12);
+
+  // ---------------------------
+  //  ЗАГРУЗКА OSDR
+  // ---------------------------
+  async function loadOsdr(currentLimit: number) {
+    setLoading(true);
+    setError(null);
+
+    const data = await getOsdrDatasets(currentLimit);
+
+    try {
+      if (!data.ok) {
+        throw new Error(data.error?.message || data.error?.code || "Unknown OSDR error");
+      }
+
+      setItems(data.items || []);
+      setFilteredItems(data.items || []);
+
+    } catch (err: any) {
+      setError(err.message || "Failed to load OSDR datasets");
+      setItems([]);
+      setFilteredItems([]);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    let cancelled = false;
+    loadOsdr(limit);
+  }, [limit]);
 
-    async function loadOsdr() {
-      setLoading(true);
-      setError(null);
+  // ---------------------------
+  //  ФИЛЬТРАЦИЯ ПО ПОИСКУ
+  // ---------------------------
+  useEffect(() => {
+    const q = search.trim().toLowerCase();
 
-      const data = await getOsdrDatasets(DEFAULT_LIMIT);
-
-      try {
-        if (!data.ok) {
-          throw new Error(data.error?.message || data.error?.code || "Unknown OSDR error");
-        }
-
-        if (!cancelled) {
-          setItems(data.items || []);
-        }
-      } catch (err: any) {
-        if (!cancelled) {
-          setError(err.message || "Failed to load OSDR datasets");
-          setItems([]);
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
+    if (!q) {
+      setFilteredItems(items);
+      return;
     }
 
-    loadOsdr();
+    const result = items.filter(item =>
+      item.title?.toLowerCase().includes(q) ||
+      item.description?.toLowerCase().includes(q) ||
+      item.id?.toLowerCase().includes(q)
+    );
 
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+    setFilteredItems(result);
+  }, [search, items]);
+
 
   const handleRetry = () => {
-    window.location.reload();
+    loadOsdr(limit);
   };
 
   return (
@@ -73,6 +90,31 @@ export const OsdrPage: React.FC = () => {
         </div>
       </header>
 
+      {/* ---------------------------
+            БЛОК ФИЛЬТРАЦИИ
+        --------------------------- */}
+      <div className="osdr-filters">
+        <input
+          className="osdr-input"
+          type="text"
+          placeholder="Поиск по названию / описанию / ID…"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <select
+          className="osdr-select"
+          value={limit}
+          onChange={(e) => setLimit(Number(e.target.value))}
+        >
+          <option value={6}>6</option>
+          <option value={12}>12</option>
+          <option value={24}>24</option>
+          <option value={48}>48</option>
+        </select>
+      </div>
+
+      {/* Состояния загрузки / ошибок */}
       {loading && (
         <div className="osdr-state osdr-state-loading">
           <span>Загружаем OSDR датасеты…</span>
@@ -90,15 +132,18 @@ export const OsdrPage: React.FC = () => {
         </div>
       )}
 
-      {!loading && !error && items.length === 0 && (
+      {!loading && !error && filteredItems.length === 0 && (
         <div className="osdr-state osdr-state-empty">
-          <span>Нет доступных датасетов OSDR.</span>
+          <span>Ничего не найдено по запросу «{search}».</span>
         </div>
       )}
 
-      {!loading && !error && items.length > 0 && (
+      {/* ---------------------------
+            СЕТКА КАРТОЧЕК
+        --------------------------- */}
+      {!loading && !error && filteredItems.length > 0 && (
         <main className="osdr-grid">
-          {items.map(item => (
+          {filteredItems.map(item => (
             <article key={item.id} className="osdr-card">
               {item.image ? (
                 <div className="osdr-card-image-wrapper">
